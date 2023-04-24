@@ -63,7 +63,9 @@ def get_user():
 
 @app_user.route('/user/update_user', methods=['post'])
 def update_user():
-    user = user_fung.query.filter(user_fung.id == 1).first()
-    user.password = 'fjq1212'
+    user_id = request.json['user_id']
+    user = user_fung.query.filter(user_fung.id == user_id).first()
+    user.password = request.json['password']
+    print(request.remote_addr)
     db.session.commit()
     return jsonify({'name': user.username, 'password': user.password})
