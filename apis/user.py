@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask import request
 from common.database import db, user_fung
 
@@ -22,7 +22,11 @@ def user_detail(user_id):
 @app_user.route('/user/user_list')
 def user_list():
     # argument:参数
-    # request.args:类字典类型
+    # request.args:不可变类字典类型
+    value = request.args
+    # 转为可变字典
+    value1 = value.to_dict()
+    print(value1['page'])
     page = request.args.get("page", default=1, type=int)
     return "您的page是{page:.2f}".format(page=page)
 
@@ -45,6 +49,21 @@ def create_user():
 
 @app_user.route('/user/get_user', methods=['get'])
 def get_user():
-    user = user_fung.query.get(1)
-    print(str(user.username))
-    return str(user.username)
+    comment = request.args.get("content")
+    # user = user_fung.query.get(1)
+    print(comment)
+    users = user_fung.query.filter(user_fung.username == "冯俊强").all()
+    print(dict(users))
+    for i in users:
+        print(i.username)
+    gender = request.args.get('gender')
+    name = request.args.get('name')
+    return jsonify({'name': name, 'gender': gender})
+
+
+@app_user.route('/user/update_user', methods=['post'])
+def update_user():
+    user = user_fung.query.filter(user_fung.id == 1).first()
+    user.password = 'fjq1212'
+    db.session.commit()
+    return jsonify({'name': user.username, 'password': user.password})
