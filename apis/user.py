@@ -77,4 +77,4 @@ def delete_user():
     user = user_fung.query.filter(user_fung.id == user_id).first()
     db.session.delete(user)
     db.session.commit()
-    return "删除%s成功" % user_id
+    return "删除%s成功了" % user_id
