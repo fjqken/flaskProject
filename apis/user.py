@@ -69,3 +69,12 @@ def update_user():
     print(request.remote_addr)
     db.session.commit()
     return jsonify({'name': user.username, 'password': user.password})
+
+
+@app_user.route('/user/delete_user', methods=['delete'])
+def delete_user():
+    user_id = request.json['user_id']
+    user = user_fung.query.filter(user_fung.id == user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return "删除%s成功" % user_id
