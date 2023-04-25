@@ -85,7 +85,8 @@ def userl_login():
     login_body = request.json
     user = user_fung.query.filter(user_fung.username == login_body['username']).first()
     if user:
-        return jsonify({'success': True, 'msg': '登录成功', 'user_id': user.id})
+        return jsonify(
+            {'code': 20000, 'msg': '登录成功', 'data': {'user_id': user.id, 'token': "admin-token"}, 'success': True})
     else:
         return jsonify({'success': False, 'msg': '登录失败'})
 
