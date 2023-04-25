@@ -78,3 +78,16 @@ def delete_user():
     db.session.delete(user)
     db.session.commit()
     return "删除%s成功了" % user_id
+
+
+@app_user.route('/user/login', methods=['post'])
+def userl_login():
+    login_body = request.json
+    user = user_fung.query.filter(user_fung.username == login_body['username']).first()
+    if user:
+        return jsonify({'success': True, 'msg': '登录成功', 'user_id': user.id})
+    else:
+        return jsonify({'success': False, 'msg': '登录失败'})
+
+    # db.session.add(user)
+    # db.session.commit()
