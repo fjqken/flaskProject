@@ -88,7 +88,27 @@ def userl_login():
         return jsonify(
             {'code': 20000, 'msg': '登录成功', 'data': {'user_id': user.id, 'token': "admin-token"}, 'success': True})
     else:
-        return jsonify({'success': False, 'msg': '登录失败'})
+        result_error = {"code": 60204, "message": "账号密码错误"}
+        return jsonify(result_error)
 
     # db.session.add(user)
     # db.session.commit()
+
+
+@app_user.route("/user/info", methods=['GET'])
+def info():
+    # 获取GET中请求token参数值
+    token = request.args.get('token')
+    if token == 'admin-token':
+        result_success = {
+            "code": 20000,
+            "data": {
+                "roles": ["admin"],
+                "introduction": "I am a super administrator",
+                "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+                "name": "Super Admin"}
+        }
+        return result_success
+    else:
+        result_error = {"code": 60204, "message": "用户信息获取错误"}
+        return result_error
