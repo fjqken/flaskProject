@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from apis.user import app_user
 from apis.interface_debugging import interface_debugging
+from apis.project_api import project_api
 import config.configs as configs
 from flask_sqlalchemy import SQLAlchemy
 from common.database import db
@@ -10,6 +11,8 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.register_blueprint(app_user)
 app.register_blueprint(interface_debugging)
+app.register_blueprint(project_api)
+
 app.config.from_object(configs)
 db.init_app(app)
 

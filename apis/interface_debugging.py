@@ -21,5 +21,6 @@ def interface_test():
         print(url)
         res = interface_request.get(url=url)
         return jsonify(
-            {'code': 20000, 'msg': '请求成功', 'data': {'code': int(res.status_code), 'elapsed': str(res.elapsed),'res':res.text},
+            {'code': 20000, 'msg': '请求成功',
+             'data': {'code': int(res.status_code), 'elapsed': str(res.elapsed), 'res': res.text},
              'success': True})
