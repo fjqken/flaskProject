@@ -11,3 +11,12 @@ class user_fung(db.Model):
     password = db.Column(db.String(100), nullable=False)
     create_time = db.Column(db.DateTime, default=datetime.now())
     update_time = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
+
+
+class project(db.Model):
+    __table_name__ = "project"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    project_name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100))
+    create_time = db.Column(db.DateTime, default=datetime.now())
+    update_time = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())

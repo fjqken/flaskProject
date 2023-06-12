@@ -1,30 +1,26 @@
 from flask import Blueprint, jsonify
 from flask import request
+from common.database import db, project
 
 project_api = Blueprint("project_api", __name__)
 
 
 @project_api.route("/project_api/creat", methods=['POST'])
 def creat_project():
+    project_obj = project(project_name='冯俊强', address='1111')
+    db.session.add(project_obj)
+    db.session.commit()
     return jsonify({
-        "tableData": [{
-            "date": '2016-05-02',
-            "name": '王小虎',
-            "address": '上海市普陀区金沙江路 1518 弄'
-        }, {
-            "date": '2016-05-04',
-            "name": '王小虎',
-            "address": '上海市普陀区金沙江路 1517 弄'
-        }, {
-            "date": '2016-05-01',
-            "name": '王小虎',
-            "address": '上海市普陀区金沙江路 1519 弄'
-        }, {
-            "date": '2016-05-03',
-            "name": '王小虎',
-            "address": '上海市普陀区金沙江路 1516 弄'
-        }],
-        "total": 0,
-        "pageSize": 10,
-        "currentPage": 1
+        'code': 20000, 'msg': '创建项目成功', 'success': True
+    })
+
+
+@project_api.route("/project_api/select_list", methods=['POST'])
+def select_project():
+    project_list = project.query.filter().all()
+    # db.session.add(project_list)
+    for i in project_list:
+        print(i)
+    return jsonify({
+        'code': 20000, 'msg': '创建项目成功', 'success': True
     })

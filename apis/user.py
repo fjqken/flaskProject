@@ -98,17 +98,45 @@ def userl_login():
 @app_user.route("/user/info", methods=['GET'])
 def info():
     # 获取GET中请求token参数值
-    token = request.args.get('token')
-    if token == 'admin-token':
-        result_success = {
-            "code": 20000,
-            "data": {
-                "roles": ["admin"],
-                "introduction": "I am a super administrator",
-                "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-                "name": "Super Admin"}
+    users = {
+        'admin-token': {
+            'roles': ['admin'],
+            'introduction': 'I am a super administrator',
+            'avatar': 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+            'name': 'Super Admin'
+        },
+        'editor-token': {
+            'roles': ['editor'],
+            'introduction': 'I am an editor',
+            'avatar': 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+            'name': 'Normal Editor'
         }
-        return result_success
+    }
+    token = request.args.get('token')
+    info = users[token]
+    # if token == 'admin-token':
+    #     result_success = {
+    #         "code": 20000,
+    #         "data": {
+    #             "roles": ["admin"],
+    #             "introduction": "I am a super administrator",
+    #             "avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+    #             "name": "Super Admin"}
+    #     }
+    #     return result_success
+    # else:
+    #     result_error = {"code": 60204, "message": "用户信息获取错误"}
+    #     return result_error
+    if info:
+        return jsonify({"code": 20000, "data": info})
     else:
         result_error = {"code": 60204, "message": "用户信息获取错误"}
         return result_error
+
+
+@app_user.route("/user/logout", methods=['post'])
+def logout():
+    return jsonify({
+        'code': 20000,
+        'data': 'success'
+    })
