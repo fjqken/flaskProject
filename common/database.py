@@ -20,3 +20,6 @@ class project(db.Model):
     address = db.Column(db.String(100))
     create_time = db.Column(db.DateTime, default=datetime.now())
     update_time = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
+    # 添加项目创建者的外键
+    create_user_id = db.Column(db.Integer, db.ForeignKey(user_fung.id))
+    create_user = db.relationship("user_fung", backref="project")
