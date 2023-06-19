@@ -23,13 +23,21 @@ def creat_project():
 
 @project_api.route("/project_api/select_list", methods=['POST'])
 def select_project():
-    user_obj = user_fung.query.filter(user_fung.id == 1).first()
-    for project1 in user_obj.project:
-        print(project1.project_name)
+    request_body = request.get_json()
+    return_project_list = []
+    if 'id' in request_body.keys():
+        project_list = user_fung.query.filter(user_fung.id == request.get_json()['id']).first()
+        for project_obj in project_list:
+            return_project_list.append({"id": project_obj.id, 'project_name': project_obj.project_name})
+    else:
+        project_list = project.query.filter().all()
+        for project_obj in project_list:
+            return_project_list.append({"id": project_obj.id, 'project_name': project_obj.project_name})
+    print(return_project_list)
     # project_list = project.query.filter().all()
     # db.session.add(project_list)
     # for i in project_list:
     #     print(i.project_name)
     return jsonify({
-        'code': 20000, 'msg': '查询项目成功', 'success': True
+        "code": 20000, "msg": "查询项目成功", "success": True, "data": return_project_list
     })
