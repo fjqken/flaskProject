@@ -2,6 +2,7 @@ import json
 
 from flask import Blueprint, jsonify
 from flask import request
+
 from common.database import db, project, user_fung
 
 project_api = Blueprint("project_api", __name__)
@@ -25,19 +26,16 @@ def creat_project():
 def select_project():
     request_body = request.get_json()
     return_project_list = []
-    if 'id' in request_body.keys():
-        project_list = user_fung.query.filter(user_fung.id == request.get_json()['id']).first()
-        for project_obj in project_list:
-            return_project_list.append({"id": project_obj.id, 'project_name': project_obj.project_name})
-    else:
+    if request_body == {}:
         project_list = project.query.filter().all()
-        for project_obj in project_list:
-            return_project_list.append({"id": project_obj.id, 'project_name': project_obj.project_name})
-    print(return_project_list)
-    # project_list = project.query.filter().all()
-    # db.session.add(project_list)
-    # for i in project_list:
-    #     print(i.project_name)
+    else:
+        filters = (project.create_user_id == request_body['create_user_id'],
+                   project.project_name.like("%" + request_body['project_name'] + "%"))
+        project_list = project.query.filter(*filters).all()
+    for project_obj in project_list:
+        return_project_list.append({"id": project_obj.id, 'project_name': project_obj.project_name,
+                                    'create_time': project_obj.create_time.strftime('%Y-%m-%d %H:%M:%S'),
+                                    'address': project_obj.address})
     return jsonify({
         "code": 20000, "msg": "查询项目成功", "success": True, "data": return_project_list
     })

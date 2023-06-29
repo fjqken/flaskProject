@@ -4,8 +4,8 @@ from apis.user import app_user
 from apis.interface_debugging import interface_debugging
 from apis.project_api import project_api
 import config.configs as configs
-from flask_sqlalchemy import SQLAlchemy
 from common.database import db
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -15,6 +15,14 @@ app.register_blueprint(project_api)
 
 app.config.from_object(configs)
 db.init_app(app)
+migrate = Migrate(app, db)
+
+
+# ORM模型欧射成表的三步
+# 1.fLask db init:这步只需要执行一次
+# 2.fLask db migrate: 识ORM模型的改变，生成迁移脚本#
+# 3.fLask db upgrade: 运行还移脚本，同步到数据库中
+
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 # db = SQLAlchemy(app)
@@ -24,8 +32,8 @@ db.init_app(app)
 #         rs = conn.execute("select 1")
 #         print(rs.fetchone())
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 
 @app.route('/')
