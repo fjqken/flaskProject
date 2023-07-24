@@ -8,7 +8,7 @@ from common.database import db, project, user_fung
 project_api = Blueprint("project_api", __name__)
 
 
-@project_api.route("/project_api/creat", methods=['POST'])
+@project_api.route("/project_api/creat_project", methods=['POST'])
 def creat_project():
     data = request.get_data()
     js_data = json.loads(data)
@@ -16,6 +16,7 @@ def creat_project():
     project_obj = project(project_name=js_data['project_name'], address=js_data['address'])
     project_obj.create_user = user_fung.query.filter(user_fung.id == 1).first()
     db.session.add(project_obj)
+    db.session.flush()
     db.session.commit()
     return jsonify({
         'code': 20000, 'msg': '创建项目成功', 'success': True
