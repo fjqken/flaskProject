@@ -95,6 +95,18 @@ def userl_login():
     # db.session.commit()
 
 
+@app_user.route('/user/loginv2', methods=['post'])
+def userl_loginv2():
+    login_body = request.json
+    user = user_fung.query.filter(user_fung.username == login_body['username']).first()
+    if user:
+        return jsonify(
+            {'code': 200, 'msg': 'success', 'data': {'accessToken': 'admin-accessToken'}})
+    else:
+        result_error = {"code": 60204, "message": "账号密码错误"}
+        return jsonify(result_error)
+
+
 @app_user.route("/user/info", methods=['GET'])
 def info():
     # 获取GET中请求token参数值
@@ -134,9 +146,105 @@ def info():
         return result_error
 
 
+@app_user.route("/user/userInfo", methods=['get'])
+def userInfo():
+    return jsonify({
+        'code': 200,
+        'msg': 'success',
+        'data': {'permissions': ['admin'], 'username': "admin",
+                 'avatar|1': [
+                     'https://i.gtimg.cn/club/item/face/img/2/15922_100.gif',
+                     'https://i.gtimg.cn/club/item/face/img/8/15918_100.gif',
+                 ]}
+    })
+
+
 @app_user.route("/user/logout", methods=['post'])
 def logout():
     return jsonify({
         'code': 20000,
         'data': 'success'
+    })
+
+
+@app_user.route("/api/getResouceList", methods=['get'])
+def getResouceList():
+    list1 = [
+        {
+            'title': 'Nutui',
+            'desc': '京东风格的轻量级移动端 Vue 组件库',
+            'url': 'https://nutui.jd.com/#/range',
+            'logo': 'index/nutui.png',
+        },
+        {
+            'title': 'Vant',
+            'desc': '轻量、可靠的移动端 Vue 组件库',
+            'url': 'https://vant-contrib.gitee.io/vant/v3/#/zh-CN',
+            'logo': 'index/vant.png',
+        },
+        {
+            'title': 'Ant Design',
+            'desc': '为 Web 应用提供了丰富的基础 UI 组件',
+            'url': 'https://antdv.com/docs/vue/introduce-cn/',
+            'logo': 'index/antd.svg',
+        },
+        {
+            'title': 'Vite 中文',
+            'desc': '下一代前端开发与构建工具',
+            'url': 'https://cn.vitejs.dev/',
+            'logo': 'index/vite.svg',
+        },
+        {
+            'title': 'Vue3 文档',
+            'desc': '渐进式JavaScript框架vue3中文文档',
+            'url': 'https://vue3js.cn/docs/zh/',
+            'logo': 'logo.png',
+        },
+        {
+            'title': 'ElementPlus',
+            'desc': '一套基于 Vue 3.0 的桌面端组件库',
+            'url': 'https://element-plus.gitee.io/#/zh-CN/component/installation',
+            'logo': 'index/element+.svg',
+        },
+        {
+            'title': 'Iconpark',
+            'desc': '2400+基础图标，29种图标分类，提供更多的选择',
+            'url': 'https://iconpark.oceanengine.com/home',
+            'logo': 'index/iconpark.svg',
+        },
+        {
+            'title': 'Naiveui',
+            'desc': '一个 Vue 3 组件库，使用 TypeScript',
+            'url': 'https://www.naiveui.com/zh-CN/light',
+            'logo': 'index/naive.svg',
+        },
+        {
+            'title': 'Echarts5.0',
+            'desc': '一个基于 JavaScript 的开源可视化图表库',
+            'url': 'https://echarts.apache.org/zh/index.html',
+            'logo': 'index/echarts.png',
+        },
+        {
+            'title': 'XGplayer',
+            'desc': '带解析器、能节省流量的 Web 视频播放器',
+            'url': 'http://v2.h5player.bytedance.com/',
+            'logo': 'index/xgplayer.png',
+        },
+        {
+            'title': 'VueUse',
+            'desc': 'VUE组合实用程序的集合',
+            'url': 'https://vueuse.org/',
+            'logo': 'index/vueuse.svg',
+        },
+        {
+            'title': 'Vue3 源码',
+            'desc': '深入学习了解vue3源码',
+            'url': 'https://vue3js.cn/start/',
+            'logo': 'logo.png',
+        },
+    ]
+    return jsonify({
+        'code': 200,
+        'msg': 'success',
+        'data': {'list': list1}
     })
