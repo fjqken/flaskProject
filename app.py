@@ -37,8 +37,10 @@ app.register_blueprint(project_api)
 app.config["JSON_AS_ASCII"] = False
 app.config.from_object(configs)
 app.json_encoder = CustomJSONEncoder
+# 初始化db 绑定flask及db
 db.init_app(app)
-migrate = Migrate(app, db)
+# 创建迁移对象
+# migrate = Migrate(app, db)
 
 # ORM模型欧射成表的三步
 # 1.fLask db init:这步只需要执行一次

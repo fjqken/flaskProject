@@ -1,3 +1,4 @@
+# 用于保存系统的配置信息
 HOST = 'localhost'
 PORT = '3306'
 DATABASE = 'tpmstore'
