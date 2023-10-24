@@ -9,7 +9,6 @@ import config.configs as configs
 from common.database import db
 from flask_migrate import Migrate
 from flask.json import JSONEncoder
-
 from common.database_func import model_to_dict
 
 
