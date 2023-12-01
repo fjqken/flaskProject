@@ -1,6 +1,7 @@
+from collections.abc import Iterable
+
 
 def model_to_dict(result):
-    from collections import Iterable
     # 转换完成后，删除  '_sa_instance_state' 特殊属性
     try:
         if isinstance(result, Iterable):

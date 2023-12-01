@@ -1,5 +1,5 @@
 from datetime import datetime
-from common.exts import db
+from models.BaseModel import BaseModel, db
 
 
 class user_fung(db.Model):
@@ -39,3 +39,10 @@ class api_test(db.Model):
     status = db.Column(db.Integer)
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+
+class test(BaseModel):
+    # 测试表
+    __table_name__ = "test"
+    name = db.Column(db.String(100), nullable=False)
+    name1 = db.Column(db.String(100), nullable=False)

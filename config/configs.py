@@ -1,11 +1,19 @@
-# 用于保存系统的配置信息
-HOST = 'localhost'
-PORT = '3306'
-DATABASE = 'tpmstore'
-USERNAME = 'root'
-PASSWORD = '951212'
-DB_URI = "mysql+pymysql://{username}:{password}@{host}:{port}/{db}?charset=utf8".format(username=USERNAME,password=PASSWORD, host=HOST,port=PORT, db=DATABASE)
+# 日志
+LOG_LEVEL = "DEBUG"
+LOG_DIR_NAME = "./logs"
 
-SQLALCHEMY_DATABASE_URI = DB_URI
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_ECHO = True
+REDIS = {
+    'HOST': '192.168.68.133',
+    'PORT': 6379,
+    'PASSWD': '',
+    'DB': 0,
+    "EXPIRE": 60000
+}
+
+# token
+SECRET_KEY = "jinwandalaohu"
+EXPIRES_IN = 9999
+
+# 上传文件
+UPLOAD_HEAD_FOLDER = "static/uploads/avatar"
+app_url = "http://localhost:5000"

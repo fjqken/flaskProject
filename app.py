@@ -1,16 +1,16 @@
 from datetime import datetime, date
 from flask import Flask
 from flask_cors import CORS
-from flask_sqlalchemy import Model
+from flask_migrate import Migrate
+from flask_sqlalchemy.model import Model
 from apis.user import app_user
 from apis.interface_debugging import interface_debugging
 from apis.project_api import project_api
-import config.configs as configs
-from common.database import db
-from flask_migrate import Migrate
-from flask.json import JSONEncoder
-from common.database_func import model_to_dict
-
+from config import db_configs,configs
+from models.database import db
+from json import JSONEncoder
+from utils.database_func import model_to_dict
+from utils.conf_log import handler
 
 class CustomJSONEncoder(JSONEncoder):
     # 设置jsonify 格式
@@ -20,6 +20,7 @@ class CustomJSONEncoder(JSONEncoder):
         elif isinstance(obj, date):
             return obj.strftime('%Y-%m-%d')
         elif isinstance(obj, Model):
+            print('zouzheli')
             return model_to_dict(obj)
         elif isinstance(obj, object):
             return obj.__dict__
@@ -34,12 +35,20 @@ app.register_blueprint(app_user)
 app.register_blueprint(interface_debugging)
 app.register_blueprint(project_api)
 app.config["JSON_AS_ASCII"] = False
-app.config.from_object(configs)
+app.config.from_object(db_configs)
+#redis的配置
+# app.config['REDIS_HOST'] = configs.REDIS['HOST']
+# app.config['REDIS_PORT'] = configs.REDIS['PORT']
+# app.config['REDIS_DB'] = configs.REDIS['DB']
+# app.config['REDIS_PWD'] = configs.REDIS['PASSWD']
+# app.config['REDIS_EXPIRE'] = configs.REDIS['EXPIRE']
 app.json_encoder = CustomJSONEncoder
 # 初始化db 绑定flask及db
 db.init_app(app)
+# 配置flask日志
+app.logger.addHandler(handler)
 # 创建迁移对象
-# migrate = Migrate(app, db)
+migrate = Migrate(app, db)
 
 # ORM模型欧射成表的三步
 # 1.fLask db init:这步只需要执行一次

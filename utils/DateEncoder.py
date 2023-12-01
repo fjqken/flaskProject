@@ -2,7 +2,7 @@ import json
 from datetime import datetime, date
 from flask_sqlalchemy import Model
 
-# from common.database_func import model_to_dict
+# from models.database_func import model_to_dict
 
 
 class ComplexEncoder(json.JSONEncoder):

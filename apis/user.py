@@ -1,7 +1,7 @@
 import json
 from flask import Blueprint, jsonify
 from flask import request
-from common.database import db, user_fung
+from models.database import db, user_fung
 
 app_user = Blueprint("app_user", __name__)
 

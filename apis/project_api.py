@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, jsonify
 from flask import request
 
-from common.database import db, project, user_fung
+from models.database import db, project, user_fung
 
 project_api = Blueprint("project_api", __name__)
 

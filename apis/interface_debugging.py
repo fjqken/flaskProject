@@ -1,10 +1,12 @@
+import json
+
 from flask import Blueprint, jsonify
 from flask import request
 import requests as interface_request
 from sqlalchemy import or_, and_
-
-from common.database import db, user_fung, api_test
-from flask_sqlalchemy import Pagination
+from models.database import db, user_fung, api_test
+from flask import current_app
+# from flask_sqlalchemy import Pagination
 
 interface_debugging = Blueprint("interface_debugging", __name__)
 
@@ -129,12 +131,16 @@ def select_interface_list():
         # query = api_test.query.filter(api_test.name)
         paginate = query.paginate(page=int(currentPage), per_page=int(page_size), error_out=False)
         interface_list = paginate.items
+        # print(type(interface_list))
         current_page = paginate.page
         total_page = paginate.pages
         total = paginate.total
+        from utils.database_func import model_to_dict
+        interface_list = model_to_dict(interface_list)
+        current_app.logger.error('1111111111111111')
         # total = len(query.all())
         # interface_list = api_test.query.filter().all()
-
+        # return {'code':1}
         return jsonify(
             {'code': 200, 'msg': '请求成功',
              'success': True, 'data': interface_list, 'current_page': current_page, 'total_page': total_page,
